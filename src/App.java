@@ -7,17 +7,16 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Pessoa> pessoas = new ArrayList<>();
-        List<Pessoa> mulheres = new ArrayList<>();
         String dados = "";
 
-        while(true) {
+        while (true) {
             System.out.println("Digite nome-sexo: ou digite 'mostrar lista' para exibir as mulheres ou 'sair' para encerrar");
             dados = scanner.nextLine();
-            if(dados.equalsIgnoreCase("sair")) {
+            if (dados.equalsIgnoreCase("sair")) {
                 break;
             }
-            if(dados.equalsIgnoreCase("mostrar lista")) {
-                mostrarListaMulheres(mulheres);
+            if (dados.equalsIgnoreCase("mostrar lista")) {
+                mostrarListaMulheres(pessoas);
                 continue;
             }
 
@@ -31,17 +30,17 @@ public class App {
             p.setNome(dadosSeparados[0].trim());
             p.setSexo(dadosSeparados[1].trim().toLowerCase());
 
-            if (isMulher(p.getSexo())) {
-                mulheres.add(p);
-            }
-
             pessoas.add(p);
         }
 
         scanner.close();
     }
 
-    private static void mostrarListaMulheres(List<Pessoa> mulheres) {
+    private static void mostrarListaMulheres(List<Pessoa> pessoas) {
+        List<Pessoa> mulheres = pessoas.stream()
+                .filter(pessoa -> isMulher(pessoa.getSexo()))
+                .collect(Collectors.toList());
+
         if (mulheres.isEmpty()) {
             System.out.println("Nenhuma mulher cadastrada.");
         } else {
